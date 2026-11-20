@@ -10,11 +10,11 @@
     phone: "+91-9667555188",
     phoneDisplay: "+91 96675 55188",
     whatsapp: "919667555188",
-    email: "hello@oneclicq.in",
+    email: "contact@oneclicq.com",
     hours: "Mon–Fri, 9:00–18:00 IST"
   };
 
-  var inSub = /\/(services|solutions)\//.test(location.pathname);
+  var inSub = /\/(services|solutions|case-studies|blog)\//.test(location.pathname);
   var P = inSub ? "../" : "";
   var reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
@@ -192,11 +192,66 @@
     var msg = document.getElementById("ms");
     if (m && msg && !msg.value) {
       var name = decodeURIComponent(m[2].replace(/\+/g, " ")).replace(/[^\w &.\-]/g, "").slice(0, 60);
-      msg.value = "I'd like a demo of " + name + ". ";
+      msg.value = "I'd like to discuss the " + name + " prototype for my business. ";
     }
   }
 
+  /* ---- Home: services tabs (WAI-ARIA tabs pattern; panels stay readable without JS) ---- */
+  function serviceTabs() {
+    document.querySelectorAll("[data-svc]").forEach(function (root) {
+      var tabs = Array.prototype.slice.call(root.querySelectorAll('[role="tab"]'));
+      function select(tab, focus) {
+        tabs.forEach(function (t) {
+          var on = t === tab;
+          t.classList.toggle("is-active", on);
+          t.setAttribute("aria-selected", on ? "true" : "false");
+          t.tabIndex = on ? 0 : -1;
+          var panel = document.getElementById(t.getAttribute("aria-controls"));
+          if (panel) panel.classList.toggle("is-active", on);
+        });
+        if (focus) tab.focus();
+      }
+      tabs.forEach(function (tab, i) {
+        tab.addEventListener("click", function () { select(tab, false); });
+        tab.addEventListener("keydown", function (e) {
+          var next = null;
+          if (e.key === "ArrowDown" || e.key === "ArrowRight") next = tabs[(i + 1) % tabs.length];
+          else if (e.key === "ArrowUp" || e.key === "ArrowLeft") next = tabs[(i - 1 + tabs.length) % tabs.length];
+          else if (e.key === "Home") next = tabs[0];
+          else if (e.key === "End") next = tabs[tabs.length - 1];
+          if (next) { e.preventDefault(); select(next, true); }
+        });
+      });
+    });
+  }
+
+  /* ---- Legal pages: highlight the current section; contents list starts collapsed on small screens ---- */
+  function legalToc() {
+    var toc = document.querySelector(".legal-toc");
+    if (!toc) return;
+    // collapsed on small screens, always open on desktop (also when the window is resized)
+    var small = window.matchMedia("(max-width: 991.98px)");
+    var sync = function () { toc.open = !small.matches; };
+    sync();
+    if (small.addEventListener) small.addEventListener("change", sync); else if (small.addListener) small.addListener(sync);
+    var links = Array.prototype.slice.call(toc.querySelectorAll('a[href^="#"]'));
+    var byId = {};
+    links.forEach(function (a) { byId[a.getAttribute("href").slice(1)] = a; });
+    if (!("IntersectionObserver" in window)) return;
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (e) {
+        if (!e.isIntersecting) return;
+        links.forEach(function (a) { a.classList.remove("is-current"); a.removeAttribute("aria-current"); });
+        var a = byId[e.target.id];
+        if (a) { a.classList.add("is-current"); a.setAttribute("aria-current", "true"); }
+      });
+    }, { rootMargin: "-30% 0px -60% 0px" });
+    document.querySelectorAll(".legal-section[id]").forEach(function (s) { io.observe(s); });
+  }
+
   function init() {
+    legalToc();
+    serviceTabs();
     navScroll();
     mobileMenu();
     reveal();

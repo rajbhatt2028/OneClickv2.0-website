@@ -16,7 +16,7 @@ Backup of the site before these changes: `../OneClicq-backup-2026-11-09/`
 | C2 | Done – **Search Console** | All canonicals, `og:url`, `og:image`, schema use `https://oneclicq.in`. `.htaccess` 301s `oneclicq.com` → `.in`. Verify `.in` in Search Console and request indexing. |
 | C3 | Done – **confirm figures** | Home/About/Case Studies read from `stats` in config (50+ projects, 20+ specialists, 10+ industries, 5+ years). Removed 98% satisfaction and 40% efficiency. Confirm these against records. |
 | C4 | Done | Fake chat bot removed. Replaced by a "Talk to OneClicq" panel: call, WhatsApp, email, contact form. No reply-time promises. |
-| H1 | Done – **confirm** | One email (`hello@oneclicq.in`) and one set of hours (Mon–Fri 9:00–18:00 IST) everywhere. Check the mailbox exists and the hours are right. |
+| H1 | Done – **confirm** | One email (`contact@oneclicq.com`) and one set of hours (Mon–Fri 9:00–18:00 IST) everywhere. Check the mailbox exists and the hours are right. |
 | H2 | Done | Every canonical points to its own URL (audit checks this). |
 | H3 | Done | Home/logo links go to `/`; `oneclicq-home.html` deleted; `.htaccess` redirects www, `/index.html`, `/oneclicq-home.html`. |
 | H4 | Done – **submit** | `robots.txt` + `sitemap.xml` (32 URLs). Submit in Search Console and Bing Webmaster Tools. |
@@ -37,7 +37,7 @@ Backup of the site before these changes: `../OneClicq-backup-2026-11-09/`
 | M9 | Done | Full menu shows down to 1100px (checked at 1280px). |
 | M10 | Done | Map no longer inverted and now shows the Greater Noida office; breadcrumb is Home › Page; smaller floating button + bottom space on phones. |
 | M11 | Mostly done | Hero shows instantly (no fade-in), images lazy-load below the fold with width/height, unused Bootstrap JS and particle animation removed, scripts deferred. The 12 Unsplash photos are now hosted in `assets/img/stock/` as WebP (700px + 1200px with `srcset`). Still to do: convert the site's own JPGs in `assets/img/` to WebP. |
-| M12 | Done – **legal review** | Security headers in `.htaccess` (CSP in report-only first). Cookie and Privacy policies now match reality (no analytics). New `terms.html` — have a lawyer review it. No analytics installed (needs an account/ID and a consent decision). |
+| M12 | Done – **legal review** | Security headers in `.htaccess` (CSP in report-only first). Cookie and Privacy policies now match reality (no analytics). `terms.html` removed (redirects to home). No analytics installed (needs an account/ID and a consent decision). |
 | L1 | Done | "OneClicq" everywhere. |
 | L2–L3 | Done | Old chat code removed with C4. |
 | L4 | Done | Indian names, companies and +91 phone formats in forms. |

@@ -26,7 +26,7 @@ const url = (p) => C.domain + "/" + p.replace(/(^|\/)index\.html$/, "$1");
 /* ---------- helpers ---------- */
 function listPages() {
   const out = [];
-  for (const dir of ["", "services", "solutions", "blog"]) {
+  for (const dir of ["", "services", "solutions", "case-studies", "blog"]) {
     for (const f of fs.readdirSync(path.join(ROOT, dir))) {
       if (f.endsWith(".html")) out.push(dir ? dir + "/" + f : f);
     }
@@ -56,7 +56,9 @@ function headerHTML(page, P) {
   const slug = page.split("/").pop();
   const inServices = page.startsWith("services/");
   const inSolutions = page.startsWith("solutions/");
-  const isActive = (href) => href === slug && !page.includes("/") || (href === "services.html" && inServices) || (href === "solutions.html" && inSolutions);
+  const inCases = page.startsWith("case-studies/");
+  const isActive = (href) => (href === "/" && page === "index.html") || (href === slug && !page.includes("/")) || (href === "services.html" && inServices) || (href === "solutions.html" && inSolutions) || (href === "case-studies.html" && inCases);
+  const link = (href) => (href === "/" ? "/" : P + href); // "/" is the site root on every page
 
   const mega =
     '<div class="mega">' +
@@ -72,10 +74,10 @@ function headerHTML(page, P) {
     const cur = isActive(n[1]);
     const a = cur ? ' aria-current="page"' : "";
     if (n[2]) {
-      return '<li class="mega-wrap' + (cur ? " active" : "") + '"><a href="' + P + n[1] + '"' + a + ">" + n[0] +
+      return '<li class="mega-wrap' + (cur ? " active" : "") + '"><a href="' + link(n[1]) + '"' + a + ">" + n[0] +
         ' <i class="bi bi-chevron-down caret" aria-hidden="true"></i></a>' + mega + "</li>";
     }
-    return "<li" + (cur ? ' class="active"' : "") + '><a href="' + P + n[1] + '"' + a + ">" + n[0] + "</a></li>";
+    return "<li" + (cur ? ' class="active"' : "") + '><a href="' + link(n[1]) + '"' + a + ">" + n[0] + "</a></li>";
   }).join("");
 
   const mob = C.nav.map((n) => {
@@ -84,7 +86,7 @@ function headerHTML(page, P) {
       return '<div class="m-item"><button type="button" class="m-link" aria-expanded="false">Services <i class="bi bi-chevron-right chev" aria-hidden="true"></i></button>' +
         '<div class="m-sub"><a href="' + P + 'services.html"><b>All Services</b></a>' + subs + "</div></div>";
     }
-    return '<div class="m-item"><a class="m-link" href="' + P + n[1] + '">' + n[0] + "</a></div>";
+    return '<div class="m-item"><a class="m-link" href="' + link(n[1]) + '"' + (isActive(n[1]) ? ' aria-current="page"' : "") + ">" + n[0] + "</a></div>";
   }).join("");
 
   return (
@@ -93,12 +95,12 @@ function headerHTML(page, P) {
     '<nav class="q-nav" id="qNav" aria-label="Primary"><div class="container">' +
     '<a class="q-logo" href="/" aria-label="' + C.brand + ' home"><img src="' + P + 'assets/img/logo.svg" alt="' + C.brand + '" class="q-logo-img" width="180" height="34"></a>' +
     '<ul class="q-menu">' + menu + "</ul>" +
-    '<div class="q-actions"><a class="btn btn-ghost" href="' + P + 'case-studies.html">View Our Work</a>' +
+    '<div class="q-actions">' +
     '<a class="btn btn-aurora" href="' + P + 'contact.html">Let\'s Talk <i class="bi bi-arrow-right" aria-hidden="true"></i></a></div>' +
     '<button type="button" class="q-burger" id="qBurger" aria-label="Open menu" aria-expanded="false" aria-controls="qMobile"><i class="bi bi-list" aria-hidden="true"></i></button>' +
     "</div></nav>" +
     '<div class="q-mobile" id="qMobile" aria-hidden="true">' + mob +
-    '<div class="m-cta"><a class="btn btn-ghost" href="' + P + 'case-studies.html">View Our Work</a>' +
+    '<div class="m-cta">' +
     '<a class="btn btn-aurora" href="' + P + 'contact.html">Let\'s Talk <i class="bi bi-arrow-right" aria-hidden="true"></i></a></div>' +
     "</div></div>\n"
   );
@@ -107,7 +109,9 @@ function headerHTML(page, P) {
 function footerHTML(P) {
   const a = C.contact.address;
   const socials = C.socials.length
-    ? '<div class="socials">' + C.socials.map((s) => '<a href="' + s[1] + '" target="_blank" rel="noopener" aria-label="' + s[0] + '"><i class="bi ' + s[2] + '" aria-hidden="true"></i></a>').join("") + "</div>"
+    ? '<div class="socials">' + C.socials.map((s) => s[1]
+      ? '<a href="' + s[1] + '" target="_blank" rel="noopener" aria-label="' + s[0] + '"><i class="bi ' + s[2] + '" aria-hidden="true"></i></a>'
+      : '<a aria-label="' + s[0] + ' (coming soon)" title="' + s[0] + ' – coming soon"><i class="bi ' + s[2] + '" aria-hidden="true"></i></a>').join("") + "</div>"
     : "";
   return (
     '<footer class="q-foot" id="site-footer"><div class="container"><div class="row g-4 g-lg-5">' +
@@ -124,7 +128,7 @@ function footerHTML(P) {
       c[1].map((l) => '<a href="' + P + l[1] + '">' + esc(l[0]) + "</a>").join("") + "</div>").join("") +
     "</div>" +
     '<div class="foot-bottom"><small>© ' + new Date().getFullYear() + " " + C.brand + ". All rights reserved.</small>" +
-    '<div class="flinks"><a href="' + P + 'privacy-policy.html">Privacy Policy</a><a href="' + P + 'cookie-policy.html">Cookie Policy</a><a href="' + P + 'terms.html">Terms of Use</a></div>' +
+    '<div class="flinks"><a href="' + P + 'privacy-policy.html">Privacy Policy</a><a href="' + P + 'cookie-policy.html">Cookie Policy</a></div>' +
     "</div></div></footer>\n"
   );
 }
@@ -144,15 +148,17 @@ function orgSchema() {
     "@id": C.domain + "/#organization",
     name: C.brand,
     url: C.domain + "/",
-    logo: C.domain + "/assets/img/logo.svg",
+    logo: { "@type": "ImageObject", url: C.domain + "/assets/img/favicon.png", width: 512, height: 512 }, // Google needs a raster logo
     image: C.domain + C.ogImage,
+    description: "Custom software, web and mobile app, AI and cloud development company in Greater Noida, serving businesses across India.",
     email: C.contact.email,
     telephone: C.contact.phone,
+    contactPoint: [{ "@type": "ContactPoint", contactType: "sales", telephone: C.contact.phone, email: C.contact.email, areaServed: "IN", availableLanguage: ["English"] }],
     priceRange: "₹₹",
     address: { "@type": "PostalAddress", streetAddress: a.street, addressLocality: a.locality, addressRegion: a.region, postalCode: a.postalCode, addressCountry: a.country },
     openingHoursSpecification: [{ "@type": "OpeningHoursSpecification", dayOfWeek: C.contact.hoursSchema.days, opens: C.contact.hoursSchema.opens, closes: C.contact.hoursSchema.closes }],
     areaServed: "IN",
-    sameAs: C.socials.map((s) => s[1])
+    sameAs: C.socials.filter((s) => s[1]).map((s) => s[1])
   };
 }
 
@@ -171,7 +177,7 @@ function schemaFor(page, meta, html) {
     graph.push({ "@type": "BreadcrumbList", itemListElement: items.map((it, i) => ({ "@type": "ListItem", position: i + 1, name: it.name, item: it.item })) });
   }
   if (meta.type === "service") {
-    graph.push({ "@type": "Service", name: meta.crumb, description: meta.description, url: url(page), serviceType: meta.crumb, provider: { "@type": "ProfessionalService", name: C.brand, url: C.domain + "/" }, areaServed: { "@type": "Country", name: "India" } });
+    graph.push({ "@type": "Service", name: meta.crumb, description: meta.description, url: url(page), serviceType: meta.crumb, provider: { "@type": "ProfessionalService", "@id": C.domain + "/#organization", name: C.brand, url: C.domain + "/" }, areaServed: { "@type": "Country", name: "India" } });
   }
   if (meta.type === "article") {
     graph.push({ "@type": "BlogPosting", headline: meta.h1 || meta.crumb, description: meta.description, url: url(page), mainEntityOfPage: url(page),
@@ -203,9 +209,12 @@ function headHTML(page, meta, P, html) {
     '<meta name="viewport" content="width=device-width, initial-scale=1.0">\n' +
     "<title>" + esc(meta.title) + "</title>\n" +
     '<meta name="description" content="' + esc(meta.description) + '">\n' +
-    (meta.noindex ? '<meta name="robots" content="noindex, follow">\n' : '<link rel="canonical" href="' + u + '">\n') +
+    (meta.noindex ? '<meta name="robots" content="noindex, follow">\n'
+      : '<meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1">\n<link rel="canonical" href="' + u + '">\n') +
     '<meta name="theme-color" content="' + C.themeColor + '">\n' +
-    '<meta property="og:type" content="website">\n' +
+    (meta.type === "article"
+      ? '<meta property="og:type" content="article">\n<meta property="article:published_time" content="' + meta.date + '">\n<meta property="article:author" content="' + C.brand + '">\n'
+      : '<meta property="og:type" content="website">\n') +
     '<meta property="og:site_name" content="' + C.brand + '">\n' +
     '<meta property="og:locale" content="en_IN">\n' +
     '<meta property="og:title" content="' + esc(meta.title) + '">\n' +
@@ -213,6 +222,7 @@ function headHTML(page, meta, P, html) {
     '<meta property="og:url" content="' + u + '">\n' +
     '<meta property="og:image" content="' + C.domain + C.ogImage + '">\n' +
     '<meta property="og:image:width" content="1200">\n<meta property="og:image:height" content="630">\n' +
+    '<meta property="og:image:alt" content="' + C.brand + ' – software, app and AI development company">\n' +
     '<meta name="twitter:card" content="summary_large_image">\n' +
     '<meta name="twitter:title" content="' + esc(meta.title) + '">\n' +
     '<meta name="twitter:description" content="' + esc(meta.description) + '">\n' +
@@ -223,7 +233,7 @@ function headHTML(page, meta, P, html) {
     '<link rel="preconnect" href="https://fonts.googleapis.com">\n' +
     '<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>\n' +
     '<link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>\n' +
-    '<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&display=swap" rel="stylesheet">\n' +
+    '<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Manrope:wght@500;600;700;800&display=swap" rel="stylesheet">\n' +
     '<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">\n' +
     '<link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">\n' +
     '<link href="' + P + "assets/css/main.css?v=" + V + '" rel="stylesheet">\n' +

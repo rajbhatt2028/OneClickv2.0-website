@@ -9,10 +9,10 @@ module.exports = {
   domain: "https://oneclicq.in", // main domain (oneclicq.com 301-redirects here)
   ogImage: "/assets/img/og.png",
   themeColor: "#FFFFFF",
-  assetVersion: "6", // bump when main.css / main.js change, to bust caches
+  assetVersion: "20", // bump when main.css / main.js change, to bust caches
 
   contact: {
-    email: "hello@oneclicq.in",
+    email: "contact@oneclicq.com",
     phone: "+91-9667555188",
     phoneDisplay: "+91 96675 55188",
     whatsapp: "919667555188", // digits only, no +; set to "" to hide WhatsApp
@@ -71,8 +71,12 @@ module.exports = {
 
   /* Real profile URLs only. Leave empty to hide. */
   socials: [
-    // ["LinkedIn", "https://www.linkedin.com/company/oneclicq", "bi-linkedin"],
-    // ["Instagram", "https://www.instagram.com/oneclicq", "bi-instagram"],
+    ["Facebook", "https://www.facebook.com/profile.php?id=61595198662063", "bi-facebook"],
+    ["LinkedIn", "https://www.linkedin.com/in/oneclicq-it-solutions-124017444/", "bi-linkedin"],
+    ["Instagram", "https://www.instagram.com/oneclicq_it_solutions/", "bi-instagram"],
+    // Accounts not created yet: icon shows but does not link. Paste the URL here once they exist.
+    ["YouTube", "", "bi-youtube"],
+    ["X", "", "bi-twitter-x"],
   ],
 
   mega: [
@@ -96,18 +100,16 @@ module.exports = {
   ],
 
   nav: [
-    ["About", "about.html"],
     ["Services", "services.html", true],
     ["Solutions", "solutions.html"],
     ["Industries", "industries.html"],
-    ["Products", "products.html"],
-    ["Technologies", "technologies.html"],
-    ["Careers", "careers.html"],
+    ["Case Studies", "case-studies.html"],
+    ["About", "about.html"],
     ["Contact", "contact.html"]
   ],
 
   footCols: [
-    ["Company", [["About", "about.html"], ["Careers", "careers.html"], ["Case Studies", "case-studies.html"], ["FAQ", "faq.html"], ["Contact", "contact.html"]]],
+    ["Company", [["About", "about.html"], ["Case Studies", "case-studies.html"], ["Careers", "careers.html"], ["Contact", "contact.html"]]],
     ["Services", [
       ["Custom Software Development", "services/software-development.html"],
       ["Web Application Development", "services/web-development.html"],
@@ -125,7 +127,7 @@ module.exports = {
       ["E-Commerce Platforms", "solutions/ecommerce.html"],
       ["Customer Portals", "solutions/customer-portals.html"]
     ]],
-    ["Explore", [["Blog", "blog/"], ["Industries", "industries.html"], ["Products", "products.html"], ["Technologies", "technologies.html"], ["Solutions", "solutions.html"]]]
+    ["Explore", [["Blog", "blog/"], ["Industries", "industries.html"], ["Prototypes", "products.html"], ["Technologies", "technologies.html"], ["FAQ", "faq.html"]]]
   ],
 
   /* Per-page SEO. title: 50–60 chars, description: 140–155 chars.
@@ -158,9 +160,9 @@ module.exports = {
       crumb: "Industries"
     },
     "products.html": {
-      title: "ERP, CRM & Business Software Products | OneClicq",
-      description: "Explore OneClicq products: QuantumERP, RelateCRM, StayFlow, BuildCore, LearnHub, FlowOps and Cognify. Request a demo to see each one with your workflow.",
-      crumb: "Products"
+      title: "ERP, CRM & Business Software Prototypes | OneClicq",
+      description: "Working prototypes OneClicq has built for ERP, CRM, hospitality, construction, education, automation and AI, used as a head start for client projects.",
+      crumb: "Prototypes"
     },
     "technologies.html": {
       title: "Our Technology Stack: .NET, React, AI, Cloud | OneClicq",
@@ -169,8 +171,38 @@ module.exports = {
     },
     "case-studies.html": {
       title: "Software Development Case Studies | OneClicq",
-      description: "See how OneClicq has helped businesses modernise systems, automate workflows and launch digital products across finance, retail, healthcare and more.",
+      description: "Selected OneClicq projects: ERP, CRM, AI automation, analytics, e-commerce and AI assistants. The business problem, what we built and the areas it covered.",
       crumb: "Case Studies"
+    },
+    "case-studies/enterprise-erp-transformation.html": {
+      title: "Enterprise ERP transformation Case Study | OneClicq",
+      description: "Case study: Inventory, procurement and finance were managed in separate systems across multiple retail locations. See how OneClicq solved it.",
+      crumb: "Enterprise ERP transformation", parent: ["Case Studies", "case-studies.html"]
+    },
+    "case-studies/ai-business-automation.html": {
+      title: "AI-powered business automation Case Study | OneClicq",
+      description: "Case study: Customer support and internal workflows depended on repetitive manual work. See how OneClicq solved it.",
+      crumb: "AI-powered business automation", parent: ["Case Studies", "case-studies.html"]
+    },
+    "case-studies/crm-modernisation.html": {
+      title: "CRM modernisation Case Study | OneClicq",
+      description: "Case study: Customer information and sales activity were spread across spreadsheets and inboxes, limiting pipeline visibility. See how OneClicq solved it.",
+      crumb: "CRM modernisation", parent: ["Case Studies", "case-studies.html"]
+    },
+    "case-studies/executive-analytics-dashboard.html": {
+      title: "Executive analytics dashboard Case Study | OneClicq",
+      description: "Case study: Leadership lacked a timely, single view of business performance. See how OneClicq solved it.",
+      crumb: "Executive analytics dashboard", parent: ["Case Studies", "case-studies.html"]
+    },
+    "case-studies/ecommerce-platform.html": {
+      title: "Scalable e-commerce platform Case Study | OneClicq",
+      description: "Case study: An online business needed a marketplace that could manage inventory, payments and orders in one place. See how OneClicq solved it.",
+      crumb: "Scalable e-commerce platform", parent: ["Case Studies", "case-studies.html"]
+    },
+    "case-studies/enterprise-ai-assistant.html": {
+      title: "Enterprise AI assistant Case Study | OneClicq",
+      description: "Case study: Teams spent too much time searching for information and answering repeat questions. See how OneClicq solved it.",
+      crumb: "Enterprise AI assistant", parent: ["Case Studies", "case-studies.html"]
     },
     "careers.html": {
       title: "Careers at OneClicq | IT Jobs in Greater Noida",
@@ -179,7 +211,7 @@ module.exports = {
     },
     "contact.html": {
       title: "Contact OneClicq | Software Company in Greater Noida",
-      description: "Talk to OneClicq about your software, app or AI project. Call +91 96675 55188, email hello@oneclicq.in or visit our Greater Noida West office.",
+      description: "Talk to OneClicq about your software, app or AI project. Call +91 96675 55188, email contact@oneclicq.com or visit our Greater Noida West office.",
       crumb: "Contact"
     },
     "faq.html": {
@@ -194,14 +226,9 @@ module.exports = {
       crumb: "Privacy Policy"
     },
     "cookie-policy.html": {
-      title: "Cookie Policy | OneClicq",
+      title: "Cookie Policy for the OneClicq Website | OneClicq",
       description: "What the OneClicq website stores on your device, why, and how to control it. We currently use no analytics or advertising cookies on this site.",
       crumb: "Cookie Policy"
-    },
-    "terms.html": {
-      title: "Terms of Use | OneClicq",
-      description: "The terms that apply when you use the OneClicq website, including acceptable use, intellectual property, links to other sites and limits of liability.",
-      crumb: "Terms of Use"
     },
     "404.html": {
       title: "Page Not Found | OneClicq",
@@ -221,42 +248,42 @@ module.exports = {
       description: "Where generative AI delivers real value in a business today, where it doesn't yet, and a simple way to choose and measure your first AI project.",
       crumb: "Where generative AI actually pays off", parent: ["Blog", "blog/"], type: "article",
       h1: "Where generative AI actually pays off in the enterprise", date: "2026-11-09",
-      image: "assets/img/stock/1677442136019-21780ecad995-1200.webp"
+      image: "assets/img/stock/1793008102666-8740a3e52c44-1200.webp"
     },
     "blog/zero-downtime-cloud-migration.html": {
       title: "Zero-Downtime Cloud Migration: A Practical Guide | OneClicq",
       description: "How to move critical business systems to AWS or Azure without an outage: assessment, migration patterns, data sync, cut-over and rollback planning.",
       crumb: "Zero-downtime cloud migration", parent: ["Blog", "blog/"], type: "article",
       h1: "A pragmatic guide to zero-downtime cloud migration", date: "2026-11-09",
-      image: "assets/img/stock/1451187580459-43490279c0fa-1200.webp"
+      image: "assets/img/stock/1792164559462-425260f43099-1200.webp"
     },
     "blog/software-that-survives-year-two.html": {
       title: "Designing Software That Lasts Past Year Two | OneClicq",
       description: "The architecture, testing and documentation decisions that keep business software easy to change and affordable to run long after launch day.",
       crumb: "Software that survives its second year", parent: ["Blog", "blog/"], type: "article",
       h1: "Designing software that survives its second year", date: "2026-11-09",
-      image: "assets/img/stock/1516321318423-f06f85e504b3-1200.webp"
+      image: "assets/img/stock/1794674187169-9c6a7726f3cd-1200.webp"
     },
     "blog/legacy-modernization-checklist.html": {
       title: "Legacy System Modernisation Checklist | OneClicq",
       description: "A step-by-step checklist for modernising legacy business software: where to start, what to sequence, and how to reduce risk at every stage.",
       crumb: "Legacy modernisation checklist", parent: ["Blog", "blog/"], type: "article",
       h1: "A CIO's checklist for legacy modernisation", date: "2026-11-09",
-      image: "assets/img/stock/1551288049-bebda4e38f71-1200.webp"
+      image: "assets/img/stock/1790783621306-994f39b7fde0-1200.webp"
     },
     "blog/automation-that-pays-back.html": {
       title: "Business Automation That Pays Back Fast | OneClicq",
       description: "How to find the workflows where automation pays for itself within a quarter, estimate the return before you build, and avoid automating waste.",
       crumb: "Automation that pays for itself", parent: ["Blog", "blog/"], type: "article",
       h1: "Automation that pays for itself in a quarter", date: "2026-11-09",
-      image: "assets/img/stock/1520607162513-77705c0f0d4a-1200.webp"
+      image: "assets/img/stock/1790746442358-7d811e9818d2-1200.webp"
     },
     "blog/choosing-a-tech-stack.html": {
       title: "How to Choose a Tech Stack That Lasts | OneClicq",
       description: "A practical framework for choosing frontend, backend, database and cloud technology you won't regret in three years, with questions to ask first.",
       crumb: "Choosing a tech stack", parent: ["Blog", "blog/"], type: "article",
       h1: "Choosing a tech stack you won't regret in three years", date: "2026-11-09",
-      image: "assets/img/stock/1558494949-ef010cbdcc31-1200.webp"
+      image: "assets/img/stock/1794908471638-464fc022d85c-1200.webp"
     },
 
     "services/software-development.html": {

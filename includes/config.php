@@ -6,8 +6,8 @@
 
 return [
     // Where enquiries and applications are delivered
-    'contact_to'   => 'hello@oneclicq.in',
-    'careers_to'   => 'hello@oneclicq.in',   // e.g. hr@oneclicq.in once that mailbox exists
+    'contact_to'   => 'contact@oneclicq.com',
+    'careers_to'   => 'contact@oneclicq.com',   // e.g. hr@oneclicq.in once that mailbox exists
 
     // Sender address: must be a mailbox on your own domain (Hostinger rejects others)
     'mail_from'      => 'no-reply@oneclicq.in',

@@ -35,7 +35,8 @@ ErrorDocument 404 /404.html
   RewriteRule ^services/cloud-devops\.html$ /services/cloud-migration.html [R=301,L,NC]
   RewriteRule ^services/data-analytics\.html$ /solutions/business-intelligence.html [R=301,L,NC]
   RewriteRule ^services/ui-ux\.html$ /services/web-development.html [R=301,L,NC]
-  RewriteRule ^terms-and-conditions\.html$ /terms.html [R=301,L,NC]
+  RewriteRule ^terms-and-conditions\.html$ / [R=301,L,NC]
+  RewriteRule ^terms\.html$ / [R=301,L,NC]
 
   # Keep build tools and private folders off the web
   RewriteRule ^(tools|includes|private_uploads)(/|$) - [F,L,NC]
