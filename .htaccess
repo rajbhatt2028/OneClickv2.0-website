@@ -1,0 +1,79 @@
+# ============================================================
+# OneClicq — Apache / Hostinger settings
+# Test on a backup first. Upload to public_html for oneclicq.in.
+# Point oneclicq.com at the SAME folder (or copy this file there):
+# the first rule then sends every .com request to oneclicq.in.
+# ============================================================
+
+Options -Indexes
+DirectoryIndex index.html
+ErrorDocument 404 /404.html
+
+<IfModule mod_rewrite.c>
+  RewriteEngine On
+
+  # C2 — oneclicq.com (with or without www) -> oneclicq.in, same path
+  RewriteCond %{HTTP_HOST} ^(www\.)?oneclicq\.com$ [NC]
+  RewriteRule ^(.*)$ https://oneclicq.in/$1 [R=301,L]
+
+  # H3 — www.oneclicq.in -> oneclicq.in
+  RewriteCond %{HTTP_HOST} ^www\.oneclicq\.in$ [NC]
+  RewriteRule ^(.*)$ https://oneclicq.in/$1 [R=301,L]
+
+  # Force HTTPS
+  RewriteCond %{HTTPS} !=on
+  RewriteCond %{HTTP:X-Forwarded-Proto} !https
+  RewriteRule ^(.*)$ https://%{HTTP_HOST}/$1 [R=301,L]
+
+  # H3 — duplicate home page addresses -> /
+  RewriteCond %{THE_REQUEST} \s/+(index|oneclicq-home)\.html[\s?] [NC]
+  RewriteRule ^ / [R=301,L]
+
+  # H7 / M8 — removed pages and old broken links
+  RewriteRule ^resources\.html$ / [R=301,L,NC]
+  RewriteRule ^blog\.html$ / [R=301,L,NC]
+  RewriteRule ^services/cloud-devops\.html$ /services/cloud-migration.html [R=301,L,NC]
+  RewriteRule ^services/data-analytics\.html$ /solutions/business-intelligence.html [R=301,L,NC]
+  RewriteRule ^services/ui-ux\.html$ /services/web-development.html [R=301,L,NC]
+  RewriteRule ^terms-and-conditions\.html$ /terms.html [R=301,L,NC]
+
+  # Keep build tools and private folders off the web
+  RewriteRule ^(tools|includes|private_uploads)(/|$) - [F,L,NC]
+</IfModule>
+
+# M12 — security headers
+<IfModule mod_headers.c>
+  Header always set Strict-Transport-Security "max-age=31536000"
+  Header always set X-Content-Type-Options "nosniff"
+  Header always set X-Frame-Options "SAMEORIGIN"
+  Header always set Referrer-Policy "strict-origin-when-cross-origin"
+  Header always set Permissions-Policy "camera=(), microphone=(), geolocation=(), payment=(), usb=()"
+  # CSP starts in report-only mode: check the browser console on each page, then rename to
+  # Content-Security-Policy to enforce. Add https://challenges.cloudflare.com if you enable Turnstile.
+  Header always set Content-Security-Policy-Report-Only "default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://cdn.jsdelivr.net; font-src 'self' https://fonts.gstatic.com https://cdn.jsdelivr.net; img-src 'self' data:; frame-src https://www.google.com https://maps.google.com; connect-src 'self'; form-action 'self'; base-uri 'self'; frame-ancestors 'self'; object-src 'none'"
+  Header unset X-Powered-By
+
+  # Long cache for versioned assets, short for HTML
+  <FilesMatch "\.(css|js|svg|png|jpe?g|webp|avif|ico|woff2?)$">
+    Header set Cache-Control "public, max-age=2592000"
+  </FilesMatch>
+  <FilesMatch "\.html$">
+    Header set Cache-Control "public, max-age=600"
+  </FilesMatch>
+</IfModule>
+
+# Compression
+<IfModule mod_deflate.c>
+  AddOutputFilterByType DEFLATE text/html text/css application/javascript application/json image/svg+xml text/plain application/xml
+</IfModule>
+
+# Do not serve these files directly
+<FilesMatch "^(\.htaccess|.*\.md|package(-lock)?\.json)$">
+  Require all denied
+</FilesMatch>
+
+# Uploads: allow resumes up to 5 MB
+<IfModule mod_php.c>
+  php_value upload_max_filesize 6M
+  php_value post_max_size 8M
+</IfModule>
